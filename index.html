@@ -7,22 +7,61 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
-        body {
-            background: url('https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExdmVkZm9td2J1bnBtcDBhM3N2eTZ0MGJmYmIwaGZoc2Zwd2g4NTBhOCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/A06UFEx8jxEwU/giphy.gif') center/cover fixed;
-            height: 100vh;
-            overflow: hidden;
-        }
+  /* Background GIF Optimization */
+body {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                url('https://i.giphy.com/media/A06UFEx8jxEwU/giphy.gif') center/cover;
+    background-attachment: fixed;
+    min-height: 100vh;
+}
 
-        /* Adding a slight dark overlay to improve visibility */
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
-        }
+/* Make Layout Fully Responsive */
+.container {
+    width: 90%;
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    background: rgba(20, 20, 20, 0.85);
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+/* Input Fields - Auto Scale */
+input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    outline: none;
+}
+
+/* Responsive Button */
+button {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    background: #00ffaa;
+    color: #222;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #00dd99;
+}
+
+/* Ensure Background Works on Mobile */
+@media (max-width: 768px) {
+    body {
+        background-attachment: scroll;
+    }
+}
+
     </style>
 </head>
 <body class="flex items-center justify-center p-4 relative">
