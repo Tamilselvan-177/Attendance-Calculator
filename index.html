@@ -5,45 +5,131 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance Calculator</title>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-900 text-white flex flex-col justify-center items-center min-h-screen p-4">
-    <div class="bg-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-md text-center">
-        <h1 class="text-2xl font-bold text-teal-400 mb-4">Attendance Calculator</h1>
-        <p class="text-gray-300 mb-6">Find out how many periods you can skip while maintaining a certain attendance percentage.</p>
-        
-        <label class="block text-left mb-2">Total Course Hours:</label>
-        <input type="number" id="totalHours" class="w-full p-2 mb-4 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
-        
-        <label class="block text-left mb-2">Minutes per Period:</label>
-        <input type="number" id="minutesPerPeriod" class="w-full p-2 mb-4 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
-        
-        <label class="block text-left mb-2">Required Attendance Percentage:</label>
-        <input type="number" id="attendancePercentage" class="w-full p-2 mb-4 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="Enter percentage (e.g., 75)">
-        
-        <button onclick="calculateAttendance()" class="w-full bg-teal-500 hover:bg-teal-600 transition duration-300 py-2 rounded text-white font-bold">Calculate</button>
-        
-        <p id="result" class="mt-4 text-xl text-teal-400"></p>
-    </div>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        body {
+            background: url('https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExdmVkZm9td2J1bnBtcDBhM3N2eTZ0MGJmYmIwaGZoc2Zwd2g4NTBhOCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/A06UFEx8jxEwU/giphy.gif') center/cover fixed;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-    <p class="text-center mt-6 text-gray-400 w-full max-w-md">Developed by Tamilselvan A K</p>
+        /* Adding a slight dark overlay to improve visibility */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4 relative">
+    <div class="overlay"></div> <!-- Dark overlay for readability -->
+
+    <div class="bg-gray-900/90 backdrop-blur-md rounded-2xl shadow-2xl shadow-teal-500/20 p-8 w-full max-w-md z-10">
+        
+        <!-- Heading -->
+        <h1 class="text-3xl font-light text-teal-400 text-center mb-4 tracking-wider flex items-center justify-center gap-2">
+            <i class="ph ph-calendar-check"></i> Attendance Calculator
+        </h1>
+        <p class="text-gray-300 text-center mb-8 flex items-center justify-center gap-2">
+            <i class="ph ph-lightbulb"></i> Find out how many periods you can skip while maintaining a certain attendance percentage.
+        </p>
+
+        <!-- Input Fields -->
+        <div class="space-y-6">
+            <div class="relative">
+                <label class="block text-sm text-gray-300 mb-2">Total Course Hours</label>
+                <div class="relative">
+                    <i class="ph ph-clock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    <input
+                        id="totalHours"
+                        type="number"
+                        placeholder="Enter total hours"
+                        class="w-full pl-10 pr-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-gray-200 focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-400 transition-all"
+                    />
+                </div>
+            </div>
+
+            <div class="relative">
+                <label class="block text-sm text-gray-300 mb-2">Minutes per Period</label>
+                <div class="relative">
+                    <i class="ph ph-timer absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    <input
+                        id="minutesPerPeriod"
+                        type="number"
+                        placeholder="Enter minutes per class"
+                        class="w-full pl-10 pr-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-gray-200 focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-400 transition-all"
+                    />
+                </div>
+            </div>
+
+            <div class="relative">
+                <label class="block text-sm text-gray-300 mb-2">Required Attendance (%)</label>
+                <div class="relative">
+                    <i class="ph ph-percent absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    <input
+                        id="attendancePercentage"
+                        type="number"
+                        placeholder="Enter required percentage"
+                        class="w-full pl-10 pr-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-gray-200 focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-400 transition-all"
+                    />
+                </div>
+            </div>
+        </div>
+
+        <!-- Calculate Button -->
+        <button
+            onclick="calculateAttendance()"
+            class="w-full mt-8 bg-teal-500 text-white py-3 rounded-lg uppercase tracking-wider font-medium flex items-center justify-center gap-2 hover:bg-teal-600 transition-all transform hover:-translate-y-1 active:translate-y-0"
+        >
+            <i class="ph ph-calculator"></i> Calculate
+        </button>
+
+        <!-- Result Display -->
+        <div id="result" class="mt-6 p-4 bg-gray-800/50 rounded-lg text-gray-200 text-center hidden">
+            <!-- Result will be dynamically inserted here -->
+        </div>
+
+        <!-- Developer Credit -->
+        <div class="mt-8 text-center text-sm text-gray-400 flex items-center justify-center gap-2">
+            <i class="ph ph-code"></i> Developed by Tamilselvan A K
+        </div>
+    </div>
 
     <script>
         function calculateAttendance() {
-            let totalHours = parseFloat(document.getElementById('totalHours').value);
-            let minutesPerPeriod = parseFloat(document.getElementById('minutesPerPeriod').value);
-            let attendancePercentage = parseFloat(document.getElementById('attendancePercentage').value);
-            
-            if (isNaN(totalHours) || isNaN(minutesPerPeriod) || isNaN(attendancePercentage) || totalHours <= 0 || minutesPerPeriod <= 0 || attendancePercentage <= 0 || attendancePercentage > 100) {
-                document.getElementById('result').innerText = 'Please enter valid numbers';
+            const totalHours = parseFloat(document.getElementById('totalHours').value);
+            const minutesPerPeriod = parseFloat(document.getElementById('minutesPerPeriod').value);
+            const attendancePercentage = parseFloat(document.getElementById('attendancePercentage').value);
+
+            const resultDiv = document.getElementById('result');
+
+            if (isNaN(totalHours) || isNaN(minutesPerPeriod) || isNaN(attendancePercentage) ||
+                totalHours <= 0 || minutesPerPeriod <= 0 || attendancePercentage < 0 || attendancePercentage > 100) {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = "⚠️ Please enter valid positive numbers (0-100 for percentage)";
+                resultDiv.classList.remove('text-gray-200');
+                resultDiv.classList.add('text-red-400');
                 return;
             }
-            
-            let totalMinutes = totalHours * 60;
-            let requiredAttendance = (attendancePercentage / 100) * totalMinutes;
-            let maxAbsence = totalMinutes - requiredAttendance;
-            let periodsCanSkip = Math.floor(maxAbsence / minutesPerPeriod);
-            
-            document.getElementById('result').innerText = `You can skip up to ${periodsCanSkip} periods.`;
+
+            const totalMinutes = totalHours * 60;
+            const requiredAttendance = (attendancePercentage / 100) * totalMinutes;
+            const maxAbsence = totalMinutes - requiredAttendance;
+            const periodsCanSkip = Math.floor(maxAbsence / minutesPerPeriod);
+
+            resultDiv.style.display = 'block';
+            resultDiv.classList.remove('text-red-400');
+            resultDiv.classList.add('text-gray-200');
+            resultDiv.innerHTML = `
+                <i class="ph ph-smiley-wink text-teal-400 text-2xl"></i>
+                <br>
+                You can skip: <span class="text-teal-400 text-xl font-medium">${periodsCanSkip}</span> periods<br>
+                <small class="text-gray-400">(${maxAbsence} total minutes allowed)</small>
+            `;
         }
     </script>
 </body>
