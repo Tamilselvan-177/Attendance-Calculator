@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white flex flex-col justify-center items-center min-h-screen p-4">
+    <div class="bg-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-md text-center">
+        <h1 class="text-2xl font-bold text-teal-400 mb-4">Attendance Calculator</h1>
+        <p class="text-gray-300 mb-6">Find out how many periods you can skip while maintaining a certain attendance percentage.</p>
+        
+        <label class="block text-left mb-2">Total Course Hours:</label>
+        <input type="number" id="totalHours" class="w-full p-2 mb-4 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
+        
+        <label class="block text-left mb-2">Minutes per Period:</label>
+        <input type="number" id="minutesPerPeriod" class="w-full p-2 mb-4 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
+        
+        <label class="block text-left mb-2">Required Attendance Percentage:</label>
+        <input type="number" id="attendancePercentage" class="w-full p-2 mb-4 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="Enter percentage (e.g., 75)">
+        
+        <button onclick="calculateAttendance()" class="w-full bg-teal-500 hover:bg-teal-600 transition duration-300 py-2 rounded text-white font-bold">Calculate</button>
+        
+        <p id="result" class="mt-4 text-xl text-teal-400"></p>
+    </div>
+
+    <p class="text-center mt-6 text-gray-400 w-full max-w-md">Developed by Tamilselvan A K</p>
+
+    <script>
+        function calculateAttendance() {
+            let totalHours = parseFloat(document.getElementById('totalHours').value);
+            let minutesPerPeriod = parseFloat(document.getElementById('minutesPerPeriod').value);
+            let attendancePercentage = parseFloat(document.getElementById('attendancePercentage').value);
+            
+            if (isNaN(totalHours) || isNaN(minutesPerPeriod) || isNaN(attendancePercentage) || totalHours <= 0 || minutesPerPeriod <= 0 || attendancePercentage <= 0 || attendancePercentage > 100) {
+                document.getElementById('result').innerText = 'Please enter valid numbers';
+                return;
+            }
+            
+            let totalMinutes = totalHours * 60;
+            let requiredAttendance = (attendancePercentage / 100) * totalMinutes;
+            let maxAbsence = totalMinutes - requiredAttendance;
+            let periodsCanSkip = Math.floor(maxAbsence / minutesPerPeriod);
+            
+            document.getElementById('result').innerText = `You can skip up to ${periodsCanSkip} periods.`;
+        }
+    </script>
+</body>
+</html>
